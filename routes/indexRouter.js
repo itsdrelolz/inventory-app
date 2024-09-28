@@ -1,6 +1,10 @@
-const Router = require("express") 
+const Router = require("express"); 
+
+
 
 const indexRouter = Router();
 
 
-indexRouter('', );
+indexRouter('/', );
+
+module.exports = indexRouter();
