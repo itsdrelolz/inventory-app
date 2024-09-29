@@ -1,14 +1,15 @@
-const Router = require("express") 
+const db = require('../db/queries')
 
-const db = require("../db/queries")
-const albumsController = Router();
-
-async function getAllArtists(req, res) { 
-    const artists = await db.getAllArtists();
-    res.render("artist", {
-        artists: artists
+async function getAllAlbums(req, res) { 
+    const albums = await db.getAllAlbums();
+    res.render("album", {
+        albums: albums
     })
 }
 
 
-module.exports = albumsController;
+
+
+module.exports = { 
+    getAllAlbums
+}

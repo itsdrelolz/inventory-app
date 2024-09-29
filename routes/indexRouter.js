@@ -7,4 +7,4 @@ const indexRouter = Router();
 
 indexRouter('/', );
 
-module.exports = indexRouter();
+module.exports = indexRouter;
