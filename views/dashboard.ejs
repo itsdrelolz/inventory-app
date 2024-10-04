@@ -1,37 +1,33 @@
-<% layout("main") %> 
 
-<% block("title") %> 
-    Dashboard 
-<% endblock %> 
 
-<% block("body") %> 
-    <h1>Welcome to the Home Page</h1>
-    <p>This is some content for the home page</p>
+<h1>Welcome to the Inventory Dashboard</h1>
+<p>This is some content for the home page</p>
 
-    <div>
-        <ul>
-            <% formattedArtists.forEach(artist => { %> 
-                <li>
-                    <strong>Name:</strong> <%= artist.name %><br>
-                    <strong>Country:</strong> <%= artist.country %><br>
-                    <strong>Birthdate:</strong> <%= artist.birthdate %><br>
-                    <strong>Active Status:</strong> <%= artist.active_status %><br>
-                    <img src="<%= artist.picture_url %>" alt="<%= artist.name %>'s picture">
-                </li>
-            <% }) %>
-        </ul>
-    </div>
+<div>
+    <h2>Artists</h2>
+    <ul>
+        <% formattedArtists.forEach(artist => { %> 
+            <li>
+                <strong>Name:</strong> <%= artist.name %><br>
+                <strong>Country:</strong> <%= artist.country %><br>
+                <strong>Birthdate:</strong> <%= artist.birthdate %><br>
+                <strong>Active Status:</strong> <%= artist.active_status %><br>
+                <img src="<%= artist.picture_url %>" alt="<%= artist.name %>'s picture">
+            </li>
+        <% }) %>
+    </ul>
+</div>
 
-    <div>
-        <ul>
-            <% formattedAlbums.forEach(album => { %> 
-                <li>
-                    <strong>Album Name:</strong> <%= album.album_name %><br>
-                    <strong>Release Date:</strong> <%= album.release_date %><br>
-                    <img src="<%= album.cover_url %>" alt="<%= album.album_name %>'s cover"> <!-- Assuming you have cover_url -->
-                </li>
-            <% }) %>
-        </ul>
-    </div>
+<div>
+    <h2>Albums</h2>
+    <ul>
+        <% formattedAlbums.forEach(album => { %> 
+            <li>
+                <strong>Album Name:</strong> <%= album.album_name %><br>
+                <strong>Release Date:</strong> <%= album.release_date %><br>
+                <img src="<%= album.picture_url %>" alt="<%= album.album_name %>'s cover"> <!-- Assuming you have picture_url -->
+            </li>
+        <% }) %>
+    </ul>
+</div>
 
-<% endblock %> 

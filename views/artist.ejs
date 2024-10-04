@@ -1,17 +1,17 @@
-<% layout("main") %> 
+<h1>Welcome to the Artists Page</h1>
+<p>This is some content for the artists page</p>
 
-<% block("title") %> 
-    Artists 
-<% endblock %> 
-
-
-<% block("body") %> 
-    <h1>Welcome to the Artist Page</h1>
-    <p>This is some content for the artist page</p>
-
-
-
-    <div>
-        
-    </div>
-<% endblock %> 
+<div>
+    <h2>Artists</h2>
+    <ul>
+        <% artists.forEach(artist => { %> 
+            <li>
+                <strong>Album Name:</strong> <%= artist.name %><br>
+                <strong>Release Date:</strong> <%= album.release_date %><br>
+                <% if (artist.picture_url) { %>
+                    <img src="<%= artist.picture_url %>" alt="<%= album.album_name %>'s picture">
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+</div>
