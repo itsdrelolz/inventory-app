@@ -5,10 +5,12 @@ console.log(process.env)
 
 
 
-module.exports = new Pool({
+const pool = new Pool({
     host: "localhost", 
-    user: "<role_name>",
-    database: "top_users",
-    password: "<role_password>",
+    user: "dre",
+    database: "album_db",
+    password: "Pwer2003!",
     port: 5432 
   });
+
+  module.exports = pool;

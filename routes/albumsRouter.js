@@ -1,12 +1,12 @@
-const Router = require("express") 
-
+const express = require("express") 
+const Router = express.Router();
 const albumsController = require("../controllers/albumsController")
 const albumsRouter = Router();
 
 
 albumsRouter.get("/albums", albumsController.getAllAlbums)
 
-albumsRouter.get("/albums/create", )
+// albumsRouter.get("/albums/create", )
 
 
 

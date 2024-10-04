@@ -1,13 +1,16 @@
-const Router = require("express") 
 
-const artistsRouter = Router();
+const express = require("express") 
+const Router = express.Router();
+
+
 const artistController = require('../controllers/artistsController')
+const artistsRouter = Router();
 
 
 
-artistsRouter("/artists", artistController.getAllArtists)
-artistsRouter("/artists/create", )
-artistsRouter("/artists/:artistId", )
+artistsRouter.get("/artists", artistController.getAllArtists)
+// artistsRouter.get("/artists/create", )
+// artistsRouter.get("/artists/:artistId", )
 
 
 module.exports = artistsRouter;
