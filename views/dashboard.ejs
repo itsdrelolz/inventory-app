@@ -1,33 +1,63 @@
-
-
-<h1>Welcome to the Inventory Dashboard</h1>
-<p>This is some content for the home page</p>
-
-<div>
-    <h2>Artists</h2>
-    <ul>
-        <% formattedArtists.forEach(artist => { %> 
-            <li>
-                <strong>Name:</strong> <%= artist.name %><br>
-                <strong>Country:</strong> <%= artist.country %><br>
-                <strong>Birthdate:</strong> <%= artist.birthdate %><br>
-                <strong>Active Status:</strong> <%= artist.active_status %><br>
-                <img src="<%= artist.picture_url %>" alt="<%= artist.name %>'s picture">
-            </li>
-        <% }) %>
-    </ul>
+<div class="page-info">
+    <h1>Welcome to the Inventory Dashboard</h1>
+    <p>This is some content for the home page</p>
 </div>
 
-<div>
-    <h2>Albums</h2>
-    <ul>
-        <% formattedAlbums.forEach(album => { %> 
-            <li>
-                <strong>Album Name:</strong> <%= album.album_name %><br>
-                <strong>Release Date:</strong> <%= album.release_date %><br>
-                <img src="<%= album.picture_url %>" alt="<%= album.album_name %>'s cover"> <!-- Assuming you have picture_url -->
-            </li>
-        <% }) %>
-    </ul>
-</div>
+<div class="page-content">
+    <section class="dashboard-section">
+        <h2>Recently Added Artists</h2>
+        <% if (artists && artists.length > 0) { %>
+            <div class="card-container">
+                <% artists.forEach(artist => { %>
+                    <div class="card">
+                        <% if (artist.picture_url) { %>
+                            <img class="card-image" src="<%= artist.picture_url %>" alt="<%= artist.name %>'s picture">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Artist Picture</div>
+                        <% } %>
+                        <div class="card-content">
+                            <h3 class="card-title"><%= artist.name %></h3>
+                            <p><strong>Country:</strong> <%= artist.country %></p>
+                            <p><strong>Birthdate:</strong> <%= artist.birthdate %></p>
+                            <p><strong>Status:</strong> <%= artist.active_status %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="no-artists-message">
+                <p>No artists are currently available.</p>
+            </div>
+        <% } %>
+    </section>
 
+    <section class="dashboard-section">
+        <h2>Recently Added Albums</h2>
+        <% if (albums && albums.length > 0) { %>
+            <div class="card-container">
+                <% albums.forEach(album => { %>
+                    <div class="card">
+                        <% if (album.picture_url) { %>
+                            <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Album Cover</div>
+                        <% } %>
+                        <div class="card-content">
+                            <h3 class="card-title"><%= album.album_name %></h3>
+                            <% if (album.release_date) { %>
+                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
+                            <% } %>
+                            <% if (album.artist_name) { %>
+                                <p><strong>Artist:</strong> <%= album.artist_name %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="no-albums-message">
+                <p>No albums are currently available.</p>
+            </div>
+        <% } %>
+    </section>
+</div>

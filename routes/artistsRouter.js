@@ -10,8 +10,8 @@ const artistController = require('../controllers/artistsController')
 
 
 artistsRouter.get("/", artistController.getAllArtists)
-// artistsRouter.get("/artists/create", )
+artistsRouter.get("/create", artistController.createArtistsGet)
 // artistsRouter.get("/artists/:artistId", )
-
+artistsRouter.post("/create", artistController.createArtistsPost)
 
 module.exports =  artistsRouter; 

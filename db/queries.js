@@ -23,18 +23,33 @@ async function getAllArtists() {
 
 
 async function insertArtist(artistName, country, birthDate, activeStatus, pictureUrl) {
-    await pool.query("INSERT INTO artist (artist_name, country, birthdate, active_status, picture_url) VALUES($1, $2, $3, $4, $5)", [artistName, country, birthDate, activeStatus, pictureUrl]);
+    const client = await pool.connect();
+    try {
+        const isActive = activeStatus === 'active';
+        
+        const result = await client.query(
+            "INSERT INTO artist (artist_name, country, birthdate, active_status, picture_url) VALUES($1, $2, $3, $4, $5) RETURNING artist_id",
+            [artistName, country, birthDate, isActive, pictureUrl]
+        );
+        console.log(`Artist inserted with artist_id: ${result.rows[0].artist_id}`);
+        return result.rows[0].artist_id;
+    } catch (err) {
+        console.error('Error inserting artist:', err);
+        throw err;
+    } finally {
+        client.release();
+    }
 }
 
 
 async function searchArtist(artistId) { 
-    const { rows } = await pool.query("SELECT * FROM artist WHERE artist_id = $1", [artistId]);
+    const { rows } = await pool.query("SELECT * FROM artist WHERE artist.artist_id = $1", [artistId]);
     return rows;
 }
 
 
 async function deleteArtist(artistId) { 
-    await pool.query("DELETE FROM artist WHERE artist_id = $1", [artistId]);
+    await pool.query("DELETE FROM artist WHERE artist.artist_id = $1", [artistId]);
 }
 
 
@@ -56,7 +71,7 @@ async function searchAlbum(albumId) {
 }
 
 async function deleteAlbum(albumId) { 
-    await pool.query("DELETE FROM album WHERE album_id = $1", [albumId]);
+    await pool.query("DELETE FROM album WHERE album.album_id = $1", [albumId]);
 }
 
 
