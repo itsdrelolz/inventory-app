@@ -7,8 +7,8 @@ async function getAllAlbums(req, res, next) {
     try{
     const albums = await db.getAllAlbums();
 
-    const formattedAlbums = albums.map(( { name, release_date, picture_url }) => { 
-        return {name, release_date, picture_url}
+    const formattedAlbums = albums.map(( { id, name, release_date, picture_url }) => { 
+        return {id, name, release_date, picture_url}
     });
     res.render("albums", {
         title: "Albums",
@@ -19,6 +19,7 @@ async function getAllAlbums(req, res, next) {
     next(err)
 }
 }
+
 function getAlbumForm(req, res) { 
     res.render("albumsForm", {
         title: "Albums Form"

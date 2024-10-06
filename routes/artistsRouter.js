@@ -11,7 +11,14 @@ const artistController = require('../controllers/artistsController')
 
 artistsRouter.get("/", artistController.getAllArtists)
 artistsRouter.get("/create", artistController.createArtistsGet)
-// artistsRouter.get("/artists/:artistId", )
 artistsRouter.post("/create", artistController.createArtistsPost)
+artistsRouter.get("/:id", artistController.getSingleArtistGet)
+module.exports =  artistsRouter;
 
-module.exports =  artistsRouter; 
+
+
+
+
+
+
+

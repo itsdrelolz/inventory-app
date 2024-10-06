@@ -7,22 +7,24 @@
     <% if (albums && albums.length > 0) { %>
         <div class="card-container">
             <% albums.forEach(album => { %>
-                <div class="card">
-                    <% if (album.picture_url) { %>
-                        <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
-                    <% } else { %>
-                        <div class="card-image placeholder">No Album Cover</div>
-                    <% } %>
-                    <div class="card-content">
-                        <h2 class="card-title"><%= album.album_name %></h2>
-                        <% if (album.release_date) { %>
-                            <p><strong>Release Date:</strong> <%= album.release_date %></p>
+                <a href="/albums/<%= album.id %>" class="card-link">
+                    <div class="card">
+                        <% if (album.picture_url) { %>
+                            <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Album Cover</div>
                         <% } %>
-                        <% if (album.artist_name) { %>
-                            <p><strong>Artist:</strong> <%= album.artist_name %></p>
-                        <% } %>
+                        <div class="card-content">
+                            <h2 class="card-title"><%= album.album_name %></h2>
+                            <% if (album.release_date) { %>
+                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
+                            <% } %>
+                            <% if (album.artist_name) { %>
+                                <p><strong>Artist:</strong> <%= album.artist_name %></p>
+                            <% } %>
+                        </div>
                     </div>
-                </div>
+                </a>
             <% }) %>
         </div>
     <% } else { %>

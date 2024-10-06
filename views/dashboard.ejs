@@ -17,9 +17,7 @@
                         <% } %>
                         <div class="card-content">
                             <h3 class="card-title"><%= artist.name %></h3>
-                            <p><strong>Country:</strong> <%= artist.country %></p>
-                            <p><strong>Birthdate:</strong> <%= artist.birthdate %></p>
-                            <p><strong>Status:</strong> <%= artist.active_status %></p>
+                            
                         </div>
                     </div>
                 <% }) %>
@@ -44,11 +42,11 @@
                         <% } %>
                         <div class="card-content">
                             <h3 class="card-title"><%= album.album_name %></h3>
-                            <% if (album.release_date) { %>
-                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
-                            <% } %>
                             <% if (album.artist_name) { %>
                                 <p><strong>Artist:</strong> <%= album.artist_name %></p>
+                            <% } %>
+                            <% if (album.release_date) { %>
+                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
                             <% } %>
                         </div>
                     </div>
