@@ -7,8 +7,9 @@ const albumsController = require("../controllers/albumsController")
 
 albumsRouter.get("/", albumsController.getAllAlbums)
 
-albumsRouter.get("/create", albumsController.getAlbumForm)
+albumsRouter.get("/create", albumsController.createAlbumGet)
 
+albumsRouter.post("/create", albumsController.createAlbumPost)
 
 
 

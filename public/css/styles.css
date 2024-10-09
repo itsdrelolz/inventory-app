@@ -150,3 +150,27 @@ li {
     transform: translateY(-5px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
+
+.create-options { 
+    display: flex; 
+    gap: 20px;
+    
+}
+
+.create-options > a { 
+    text-decoration: none;
+}
+
+#submit-btn { 
+    background-color: #007bff;
+    color: white;
+    padding: 10px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: backgrround-color 0.3s ease;
+}
+
+#submit-btn:hover {
+    background-color:  #0056b3;
+}

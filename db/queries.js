@@ -60,14 +60,51 @@ async function getAllAlbums() {
 }
 
 
-async function insertAlbum(albumName, releaseDate, artistId, pictureUrl) { 
-    await pool.query("INSERT INTO album (album_name, release_date, artist_id, picture_url", [albumName, releaseDate, artistId, pictureUrl]);
+async function insertAlbum(title, artistName, releaseDate, pictureUrl) { 
+    const client = await pool.connect(); 
+    try {
+        await client.query('BEGIN');
+
+        const artistQuery = `
+          INSERT INTO artist (artist_name)
+          VALUES ($1)
+          ON CONFLICT (artist_name) DO UPDATE SET artist_name = EXCLUDED.artist_name
+          RETURNING artist_id
+        `;
+    
+        const artistResult = await client.query(artistQuery, [artistName]);
+        const artistId = artistResult.rows[0].artist_id;
+    
+        
+        const albumQuery = `
+          INSERT INTO album (album_name, artist_id, release_date, picture_url)
+          VALUES ($1, $2, $3, $4)
+          RETURNING album_id
+        `;
+    
+        const albumValues = [title, artistId, releaseDate || null, pictureUrl || null];
+        const albumResult = await client.query(albumQuery, albumValues);
+        const albumId = albumResult.rows[0].album_id;
+    
+        await client.query('COMMIT');
+    
+        console.log(`Album inserted successfully with id: ${albumId}`);
+        return { artistId, albumId };
+    
+      } catch (e) {
+        await client.query('ROLLBACK');
+        throw e;
+      } finally {
+        client.release();
+      }
 }
+    
+    
+
 
 
 async function searchAlbum(albumId) {
-    const { rows } = await pool.query("SELECT * FROM album WHERE album_id = $1", [albumId]);
-    return rows;
+    
 }
 
 async function deleteAlbum(albumId) { 
