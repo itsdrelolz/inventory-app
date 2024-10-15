@@ -1,0 +1,36 @@
+<div class="page-info">
+    <h1>Welcome to the Albums Page</h1>
+    <p>This is some content for the albums page</p>
+</div>
+
+<div class="page-content">
+    <% if (albums && albums.length > 0) { %>
+        <div class="card-container">
+            <% albums.forEach(album => { %>
+                <a href="/albums/<%= album.album_id %>" class="card-link">
+                    <div class="card">
+                        <% if (album.picture_url) { %>
+                            <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Album Cover</div>
+                        <% } %>
+                        <div class="card-content">
+                            <h2 class="card-title"><%= album.album_name %></h2>
+                            <% if (album.release_date) { %>
+                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
+                            <% } %>
+                            <% if (album.artist_name) { %>
+                                <p><strong>Artist:</strong> <%= album.artist_name %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="no-albums-message">
+            <p>No albums are currently available.</p>
+            <p>Check back later or add some albums to see them displayed here.</p>
+        </div>
+    <% } %>
+</div>

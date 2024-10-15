@@ -1,0 +1,27 @@
+<section class="dashboard-section">
+    <h2><%= title %></h2>
+    <% 
+    const album = albums['0'] || albums;
+    %>
+    <% if (album && Object.keys(album).length > 0) { %>
+        <div class="card-container">
+            <div class="card">
+                <% if (album.picture_url) { %>
+                    <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %>'s picture">
+                <% } else { %>
+                    <div class="card-image placeholder">No Album Picture</div>
+                <% } %>
+                <div class="card-content">
+                    <h3 class="card-title"><%= album.album_name %></h3>
+                 
+                    <p><strong>Release Date</strong> <%= album.release_date ? new Date(album.release_date).toLocaleDateString() : 'Unknown' %></p>
+                  
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="no-albums-message">
+            <p>No album are currently available.</p>
+        </div>
+    <% } %>
+</section>

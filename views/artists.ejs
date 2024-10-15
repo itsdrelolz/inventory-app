@@ -1,0 +1,30 @@
+<div class="page-info">
+    <h1>Welcome to the Artists Page</h1>
+    <p>This is some content for the artists page</p>
+</div>
+
+<div class="page-content">
+    <% if (artists && artists.length > 0) { %>
+        <div class="card-container">
+            <% artists.forEach(artist => { %>
+                <a href="/artists/<%= artist.artist_id %>" class="card-link">
+                    <div class="card">
+                        <% if (artist.picture_url) { %>
+                            <img class="card-image" src="<%= artist.picture_url %>" alt="<%= artist.name %>'s picture">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Artist Picture</div>
+                        <% } %>
+                        <div class="card-content">
+                            <h2 class="card-title"><%= artist.name %></h2>
+                        </div>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="no-artists-message">
+            <p>No artists are currently available.</p>
+            <p>Check back later or add some artists to see them displayed here.</p>
+        </div>
+    <% } %>
+</div>

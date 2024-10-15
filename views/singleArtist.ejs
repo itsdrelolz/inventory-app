@@ -1,0 +1,27 @@
+<section class="dashboard-section">
+    <h2><%= title %></h2>
+    <% 
+    const artist = artists['0'] || artists;
+    %>
+    <% if (artist && Object.keys(artist).length > 0) { %>
+        <div class="card-container">
+            <div class="card">
+                <% if (artist.picture_url) { %>
+                    <img class="card-image" src="<%= artist.picture_url %>" alt="<%= artist.artist_name %>'s picture">
+                <% } else { %>
+                    <div class="card-image placeholder">No Artist Picture</div>
+                <% } %>
+                <div class="card-content">
+                    <h3 class="card-title"><%= artist.artist_name %></h3>
+                    <p><strong>Country:</strong> <%= artist.country || 'Unknown' %></p>
+                    <p><strong>Birthdate:</strong> <%= artist.birthdate ? new Date(artist.birthdate).toLocaleDateString() : 'Unknown' %></p>
+                    <p><strong>Status:</strong> <%= artist.active_status ? 'Active' : 'Inactive' %></p>
+                </div>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="no-artists-message">
+            <p>No artists are currently available.</p>
+        </div>
+    <% } %>
+</section>

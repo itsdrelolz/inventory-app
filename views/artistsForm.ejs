@@ -1,0 +1,28 @@
+<h1><%= title %></h1>
+
+<form action="/artists/create" method="POST">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="country">Country:</label>
+        <input type="text" id="country" name="country" required>
+    </div>
+    <div>
+        <label for="birthdate">Birthdate:</label>
+        <input type="date" id="birthdate" name="birthdate" required>
+    </div>
+    <div>
+        <label for="active_status">Active Status:</label>
+        <select id="active_status" name="active_status" required>
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+        </select>
+    </div>
+    <div>
+        <label for="picture_url">Picture URL:</label>
+        <input type="url" id="picture_url" name="picture_url">
+    </div>
+    <button id="submit-btn" type="submit">Create Artist</button>
+</form>

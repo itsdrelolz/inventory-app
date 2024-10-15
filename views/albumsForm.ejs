@@ -1,0 +1,21 @@
+<h1>Create Album</h1>
+
+<form action="/albums/create" method="POST">
+    <div>
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+    </div>
+    <div>
+        <label for="artist-name">Artist:</label>
+        <input type="text" id="artistName" name="artistName" required>
+    </div>
+    <div>
+        <label for="release_date">Release Date:</label>
+        <input type="date" id="release_date" name="release_date" required>
+    </div>
+    <div>
+        <label for="picture_url">Picture URL:</label>
+        <input type="url" id="picture_url" name="picture_url">
+    </div>
+    <button id="submit-btn" type="submit">Create Artist</button>
+</form>
