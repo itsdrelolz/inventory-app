@@ -15,19 +15,20 @@ async function getInventory(req, res, next) {
                 active_status: formattedStatus,
                 picture_url
             };
-        });
+        }).slice(0, 5);
 
 
         const albums = await db.getAllAlbums();
-        const formattedAlbums = albums.map(( { id, album_name, release_date ,picture_url }) => {
+        const formattedAlbums = albums.map(( { id, artist_name, album_name, release_date ,picture_url }) => {
             const formattedRelease = new Date(release_date).toLocaleDateString('en-US');
            return {
             id,
             album_name,
             release_date: formattedRelease,
-            picture_url
+            picture_url,
+            artist_name
            };
-        });
+        }).slice(0, 3);
 
         
         res.render("dashboard", {

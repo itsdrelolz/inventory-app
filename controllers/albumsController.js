@@ -1,21 +1,22 @@
 
 const db = require('../db/queries')
-const { formatDate} = require('../utils/formatters');
+const { formatDate } = require('../utils/formatters');
 
 async function getAllAlbums(req, res, next) { 
     try{
     const albums = await db.getAllAlbums();
     
-    const formattedAlbums = albums.map(( { album_id, album_name, release_date, picture_url }) => { 
+    const formattedAlbums = albums.map(( { artist_name , album_id, album_name, release_date, picture_url }) => { 
     const formattedDate = formatDate(release_date)
     return {
                 album_id,
                 name: album_name,
                 release_date: formattedDate,
-                picture_url
+                picture_url, 
+                artist_name
             };
     });
-    console.log(albums)
+    console.log(formattedAlbums)
     res.render("albums", {
         title: "Albums",
         albums: formattedAlbums
@@ -70,6 +71,7 @@ async function getSingleAlbumGet(req, res) {
             releaseDate: formatDate(albumData[0].release_date),
         };
         console.log(album);
+        
         res.render("singleAlbum", {
             title: `${album.album_name} - Album Details`,
             albums: album 
@@ -83,11 +85,15 @@ async function getSingleAlbumGet(req, res) {
     }
 }
 
+async function deleteSingleAlbumPost(req, res) { 
+    
+}
 module.exports = { 
     getAllAlbums,
     createAlbumGet,
     createAlbumPost,
     createAlbumGet,
-    getSingleAlbumGet
+    getSingleAlbumGet,
+    deleteSingleAlbumPost
 }
 

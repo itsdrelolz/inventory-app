@@ -46,28 +46,30 @@ async function createArtistsPost(req, res) {
         });
     }
 }
-
 async function getSingleArtistGet(req, res) {
     const id = req.params.id;
     console.log(id);
     try {
-        const artistData = await db.searchArtist(id);
-        if (!artistData) {
+        const { artist, albums } = await db.searchArtist(id);
+        console.log(artist);
+
+        if (!artist) {
             return res.status(404).render('error', {
                 message: 'Artist not found',
                 error: { status: 404 }
             });
         }
-        
-        const artist = {
-            ...artistData[0],
-            birthdate: formatDate(artistData[0].birthdate),
-            active_status: formatActiveStatus(artistData[0].active_status)
+
+        const artistData = {
+            ...artist,
+            birthdate: formatDate(artist.birthdate),
+            active_status: formatActiveStatus(artist.active_status)
         };
-        console.log(artist);
+
         res.render("singleArtist", {
             title: `${artist.artist_name} - Artist Details`,
-            artists: artist 
+            artist: artistData,
+            albums: albums
         });
     } catch (err) {
         console.error('Error fetching artist details:', err);
@@ -79,9 +81,58 @@ async function getSingleArtistGet(req, res) {
 }
 
 
+async function getSingleArtistGet(req, res) {
+    const id = req.params.id;
+    console.log(id);
+    try {
+        const { artist, albums } = await db.searchArtist(id);
+        console.log(artist);
+
+        if (!artist) {
+            return res.status(404).render('error', {
+                message: 'Artist not found',
+                error: { status: 404 }
+            });
+        }
+
+        const artistData = {
+            ...artist,
+            birthdate: formatDate(artist.birthdate),
+            active_status: formatActiveStatus(artist.active_status)
+        };
+            
+        const formattedAlbums = albums.map(( {album_id, album_name, release_date, picture_url }) => { 
+        const formattedDate = formatDate(release_date)
+         return {
+                album_id,
+                album_name,
+                release_date: formattedDate,
+                picture_url, 
+            };
+    });
+        res.render("singleArtist", {
+            title: `${artist.artist_name} - Artist Details`,
+            artists: artistData,
+            albums: formattedAlbums
+        });
+    } catch (err) {
+        console.error('Error fetching artist details:', err);
+        res.status(500).render('error', {
+            message: 'Failed to fetch artist details',
+            error: err
+        });
+    }
+}
+
+async function deleteSingleArtistPost(req, res) { 
+    
+}
+
+
 module.exports = { 
     getAllArtists,
     createArtistsGet,
     createArtistsPost,
-    getSingleArtistGet
+    getSingleArtistGet,
+    deleteSingleArtistPost
 }

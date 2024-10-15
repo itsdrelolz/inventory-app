@@ -175,8 +175,4 @@ li {
     background-color:  #0056b3;
 }
 
-.page-content > .dashboard-section > h2 { 
-    display: flex; 
-    justify-content: center;
-    align-items: center;
-}
+

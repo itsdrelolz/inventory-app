@@ -41,12 +41,32 @@ async function insertArtist(artistName, country, birthDate, activeStatus, pictur
     }
 }
 
+async function searchArtist(artistId) {
+    try {
+        // Query for artist information
+        const artistResult = await pool.query("SELECT * FROM artist WHERE artist.artist_id = $1", [artistId]);
+        
+        // Query for artist's albums
+        const albumsResult = await pool.query(`
+            SELECT album.*, artist.artist_name AS artist_name
+            FROM album
+            JOIN artist ON album.artist_id = artist.artist_id
+            WHERE artist.artist_id = $1
+        `, [artistId]);
 
-async function searchArtist(artistId) { 
-    const { rows } = await pool.query("SELECT * FROM artist WHERE artist.artist_id = $1", [artistId]);
-    return rows;
+        // Combine the results
+        const artist = artistResult.rows[0]; // Assuming artist_id is unique
+        const albums = albumsResult.rows;
+
+        return {
+            artist: artist,
+            albums: albums
+        };
+    } catch (error) {
+        console.error("Error in searchArtist:", error);
+        throw error;
+    }
 }
-
 
 async function deleteArtist(artistId) { 
     await pool.query("DELETE FROM artist WHERE artist.artist_id = $1", [artistId]);
@@ -55,7 +75,9 @@ async function deleteArtist(artistId) {
 
 
 async function getAllAlbums() { 
-    const { rows } = await pool.query("SELECT * FROM album");
+    const { rows } = await pool.query(`SELECT album.*, artist.artist_name AS artist_name
+                                       FROM album
+                                       JOIN artist ON album.artist_id = artist.artist_id`);
     return rows;
 }
 
@@ -104,7 +126,12 @@ async function insertAlbum(title, artistName, releaseDate, pictureUrl) {
 
 
 async function searchAlbum(albumId) {
-    const { rows } = await pool.query("SELECT * FROM album WHERE album.album_id = $1", [albumId]);
+const { rows } = await pool.query(`
+  SELECT album.*, artist.artist_name AS artist_name
+  FROM album
+  JOIN artist ON album.artist_id = artist.artist_id
+  WHERE album.album_id = $1
+`, [albumId]); 
     return rows; 
 }
 

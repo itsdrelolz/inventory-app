@@ -25,3 +25,32 @@
         </div>
     <% } %>
 </section>
+
+
+<section class="artists-albums">
+        <h2>Albums</h2>
+        <% if (albums && albums.length > 0) { %>
+            <div class="card-container">
+                <% albums.forEach(album => { %>
+                    <div class="card">
+                        <% if (album.picture_url) { %>
+                            <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
+                        <% } else { %>
+                            <div class="card-image placeholder">No Album Cover</div>
+                        <% } %>
+                        <div class="card-content">
+                            <h3 class="card-title"><%= album.album_name %></h3>
+                            <% if (album.release_date) { %>
+                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
+                            <% } %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        <% } else { %>
+            <div class="no-albums-message">
+                <p>No albums are currently available.</p>
+            </div>
+        <% } %>
+    </section>
+</div>
