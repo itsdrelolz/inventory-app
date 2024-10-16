@@ -125,7 +125,8 @@ async function getSingleArtistGet(req, res) {
 }
 
 async function deleteSingleArtistPost(req, res) { 
-    
+   const id = req.params.id;
+   console.log(id)
 }
 
 

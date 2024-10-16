@@ -1,9 +1,18 @@
 <section class="dashboard-section">
     <h2><%= title %></h2>
-    <% 
+    
+    <%
     const artist = artists['0'] || artists;
     %>
     <% if (artist && Object.keys(artist).length > 0) { %>
+        <div class="artist-actions">
+            <a href="/artist/edit/<%= artist.artist_id %>" class="icon-link">
+                <img src="/images/icons8-edit-24.png" alt="Edit Artist">
+            </a>
+            <a href="/artist/delete/<%= artist.artist_id %>" class="icon-link">
+                <img src="/images/icons8-delete-30.png" alt="Delete Artist">
+            </a>
+        </div>
         <div class="card-container">
             <div class="card">
                 <% if (artist.picture_url) { %>
@@ -26,31 +35,29 @@
     <% } %>
 </section>
 
-
 <section class="artists-albums">
-        <h2>Albums</h2>
-        <% if (albums && albums.length > 0) { %>
-            <div class="card-container">
-                <% albums.forEach(album => { %>
-                    <div class="card">
-                        <% if (album.picture_url) { %>
-                            <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
-                        <% } else { %>
-                            <div class="card-image placeholder">No Album Cover</div>
+    <h2>Albums</h2>
+    <% if (albums && albums.length > 0) { %>
+        <div class="card-container">
+            <% albums.forEach(album => { %>
+                <div class="card">
+                    <% if (album.picture_url) { %>
+                        <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
+                    <% } else { %>
+                        <div class="card-image placeholder">No Album Cover</div>
+                    <% } %>
+                    <div class="card-content">
+                        <h3 class="card-title"><%= album.album_name %></h3>
+                        <% if (album.release_date) { %>
+                            <p><strong>Release Date:</strong> <%= album.release_date %></p>
                         <% } %>
-                        <div class="card-content">
-                            <h3 class="card-title"><%= album.album_name %></h3>
-                            <% if (album.release_date) { %>
-                                <p><strong>Release Date:</strong> <%= album.release_date %></p>
-                            <% } %>
-                        </div>
                     </div>
-                <% }) %>
-            </div>
-        <% } else { %>
-            <div class="no-albums-message">
-                <p>No albums are currently available.</p>
-            </div>
-        <% } %>
-    </section>
-</div>
+                </div>
+            <% }) %>
+        </div>
+    <% } else { %>
+        <div class="no-albums-message">
+            <p>No albums are currently available.</p>
+        </div>
+    <% } %>
+</section>
