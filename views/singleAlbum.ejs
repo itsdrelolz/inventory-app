@@ -5,35 +5,33 @@
     %>
     <% if (album && Object.keys(album).length > 0) { %>
         <div class="album-actions">
-    <form action="/albums/edit/<%= album.album_id %>" method="POST" style="display: inline;">
-        <button type="submit" class="icon-button">
-            <img src="/images/icons8-edit-24.png" alt="Edit Album">
-        </button>
-    </form>
-    <form action="/albums/delete/<%= album.album_id %>" method="POST" style="display: inline;">
-        <button type="submit" class="icon-button">
-            <img src="/images/icons8-delete-30.png" alt="Delete Album">
-        </button>
-    </form>
-</div>  
+            <a href="/albums/edit/<%= album.album_id %>" class="icon-button">
+                <img src="/images/icons8-edit-24.png" alt="Edit Album">
+            </a>
+            <form action="/albums/delete/<%= album.album_id %>" method="POST" style="display: inline;">
+                <button type="submit" class="icon-button">
+                    <img src="/images/icons8-delete-30.png" alt="Delete Album">
+                </button>
+            </form>
+        </div>
+
         <div class="card-container">
             <div class="card">
                 <% if (album.picture_url) { %>
-                    <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %>'s picture">
+                    <img class="card-image" src="<%= album.picture_url %>" alt="<%= album.album_name %> cover">
                 <% } else { %>
-                    <div class="card-image placeholder">No Album Picture</div>
+                    <div class="card-image placeholder">No Album Cover</div>
                 <% } %>
                 <div class="card-content">
                     <h3 class="card-title"><%= album.album_name %></h3>
-                    <h3 class="card-title"><%= album.artist_name %></h3>
-                    <p><strong>Release Date</strong> <%= album.release_date ? new Date(album.release_date).toLocaleDateString() : 'Unknown' %></p>
-                  
+                    <p><strong>Artist:</strong> <%= album.artist_name %></p>
+                    <p><strong>Release Date:</strong> <%= album.release_date ? new Date(album.release_date).toLocaleDateString() : 'Unknown' %></p>
                 </div>
             </div>
         </div>
     <% } else { %>
         <div class="no-albums-message">
-            <p>No album are currently available.</p>
+            <p>No album details are currently available.</p>
         </div>
     <% } %>
 </section>

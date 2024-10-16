@@ -1,20 +1,6 @@
 const pool = require("./pool")
 
-/* 
 
-create query to get all artists
-create query to get create an artist 
-create query to search for an artist 
-create query to delete an artist
-
-
-
-create query to get all albums
-create query to get create an album
-create query to search for an album
-create query to delete an album
-
-*/ 
 
 async function getAllArtists() { 
     const { rows } = await pool.query("SELECT * FROM artist");
@@ -43,7 +29,7 @@ async function insertArtist(artistName, country, birthDate, activeStatus, pictur
 
 async function searchArtist(artistId) {
     try {
-        // Query for artist information
+        
         const artistResult = await pool.query("SELECT * FROM artist WHERE artist.artist_id = $1", [artistId]);
         
         // Query for artist's albums
@@ -54,8 +40,8 @@ async function searchArtist(artistId) {
             WHERE artist.artist_id = $1
         `, [artistId]);
 
-        // Combine the results
-        const artist = artistResult.rows[0]; // Assuming artist_id is unique
+        
+        const artist = artistResult.rows[0]; 
         const albums = albumsResult.rows;
 
         return {
@@ -72,7 +58,32 @@ async function deleteArtist(artistId) {
     await pool.query("DELETE FROM artist WHERE artist.artist_id = $1", [artistId]);
 }
 
+async function updateArtist(artistId, artistName, country, birthDate, activeStatus, pictureUrl) {
+    if (!artistName) {
+        throw new Error("Artist name is required");
+    }
 
+    const client = await pool.connect();
+    try {
+        const isActive = activeStatus === 'active';
+        
+        const result = await client.query(
+            `UPDATE artist 
+             SET artist_name = $1, country = $2, birthdate = $3, active_status = $4, picture_url = $5
+             WHERE artist_id = $6
+             RETURNING artist_id`,
+            [artistName, country || null, birthDate || null, isActive, pictureUrl || null, artistId]
+        );
+        
+        console.log(`Artist updated with artist_id: ${result.rows[0].artist_id}`);
+        return result.rows[0].artist_id;
+    } catch (err) {
+        console.error('Error updating artist:', err);
+        throw err;
+    } finally {
+        client.release();
+    }
+}
 
 async function getAllAlbums() { 
     const { rows } = await pool.query(`SELECT album.*, artist.artist_name AS artist_name
@@ -138,16 +149,55 @@ const { rows } = await pool.query(`
 async function deleteAlbum(albumId) { 
     await pool.query("DELETE FROM album WHERE album.album_id = $1", [albumId]);
 }
+// in progress 
+async function updateAlbum(albumId, title, artistName, releaseDate, pictureUrl) {
+    const client = await pool.connect();
+    try {
+        await client.query('BEGIN');
 
+        
+        const artistQuery = `
+          INSERT INTO artist (artist_name)
+          VALUES ($1)
+          ON CONFLICT (artist_name) DO UPDATE SET artist_name = EXCLUDED.artist_name
+          RETURNING artist_id
+        `;
+        const artistResult = await client.query(artistQuery, [artistName]);
+        const artistId = artistResult.rows[0].artist_id;
 
+        
+        const albumQuery = `
+          UPDATE album 
+          SET album_name = $1, artist_id = $2, release_date = $3, picture_url = $4
+          WHERE album_id = $5
+          RETURNING album_id
+        `;
+        const albumValues = [title, artistId, releaseDate || null, pictureUrl || null, albumId];
+        const albumResult = await client.query(albumQuery, albumValues);
+        const updatedAlbumId = albumResult.rows[0].album_id;
+
+        await client.query('COMMIT');
+
+        console.log(`Album updated successfully with id: ${updatedAlbumId}`);
+        return { artistId, albumId: updatedAlbumId };
+
+    } catch (e) {
+        await client.query('ROLLBACK');
+        throw e;
+    } finally {
+        client.release();
+    }
+}
 module.exports = {
     getAllArtists, 
     insertArtist, 
     searchArtist,
     deleteArtist,
+    updateArtist,
     getAllAlbums,
     insertAlbum,
     searchAlbum, 
-    deleteAlbum
+    deleteAlbum,
+    updateAlbum
 }
 

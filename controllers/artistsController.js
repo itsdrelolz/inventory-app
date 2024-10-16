@@ -1,6 +1,5 @@
-const db = require('../db/queries')
+const db = require('../db/queries');
 const { formatDate, formatActiveStatus } = require('../utils/formatters');
-
 
 async function getAllArtists(req, res, next) {
     try {
@@ -46,6 +45,7 @@ async function createArtistsPost(req, res) {
         });
     }
 }
+
 async function getSingleArtistGet(req, res) {
     const id = req.params.id;
     console.log(id);
@@ -61,15 +61,27 @@ async function getSingleArtistGet(req, res) {
         }
 
         const artistData = {
-            ...artist,
+            artist_id: artist.artist_id,
+            artist_name: artist.artist_name,
+            country: artist.country,
             birthdate: formatDate(artist.birthdate),
-            active_status: formatActiveStatus(artist.active_status)
+            active_status: formatActiveStatus(artist.active_status),
+            picture_url: artist.picture_url
         };
+            
+        const formattedAlbums = albums.map(({ album_id, album_name, release_date, picture_url }) => { 
+            return {
+                album_id,
+                album_name,
+                release_date: formatDate(release_date),
+                picture_url, 
+            };
+        });
 
         res.render("singleArtist", {
             title: `${artist.artist_name} - Artist Details`,
-            artist: artistData,
-            albums: albums
+            artists: [artistData], // Wrap artistData in an array
+            albums: formattedAlbums
         });
     } catch (err) {
         console.error('Error fetching artist details:', err);
@@ -78,10 +90,7 @@ async function getSingleArtistGet(req, res) {
             error: err
         });
     }
-}
-
-
-async function getSingleArtistGet(req, res) {
+}async function getSingleArtistGet(req, res) {
     const id = req.params.id;
     console.log(id);
     try {
@@ -124,16 +133,83 @@ async function getSingleArtistGet(req, res) {
     }
 }
 
-async function deleteSingleArtistPost(req, res) { 
-   const id = req.params.id;
-   console.log(id)
+async function deleteSingleArtistPost(req, res) {
+    const artistId = req.params.id;
+    try {
+        await db.deleteArtist(artistId);
+        res.redirect("/artists");
+    } catch (err) {
+        console.error('Error deleting artist:', err);
+        res.status(500).render('error', {
+            message: 'Failed to delete artist',
+            error: err
+        });
+    }
+}
+
+async function getEditArtistForm(req, res) {
+    const artistId = req.params.id;
+    try {
+        const { artist } = await db.searchArtist(artistId);
+        if (!artist) {
+            return res.status(404).render('error', {
+                message: 'Artist not found',
+                error: { status: 404 }
+            });
+        }
+        
+        console.log("Artist data for edit form:", artist); // Add this line for debugging
+
+        res.render("editArtist", {
+            title: `Edit ${artist.artist_name}`,
+            artist: artist
+        });
+    } catch (err) {
+        console.error('Error fetching artist for editing:', err);
+        res.status(500).render('error', {
+            message: 'Failed to fetch artist for editing',
+            error: err
+        });
+    }
 }
 
 
-module.exports = { 
+async function updateArtistPost(req, res) {
+    console.log("updateArtistPost called");
+    console.log("Request body:", req.body);
+
+    const artistId = req.params.id;
+    try {
+        const { name, country, birthdate, active_status, picture_url } = req.body;
+
+        if (!name || name.trim() === '') {
+            throw new Error("Artist name is required");
+        }
+
+        await db.updateArtist(
+            artistId,
+            name.trim(),
+            country || null,
+            birthdate || null,
+            active_status === 'on',
+            picture_url || null
+        );
+
+        res.redirect(`/artists/${artistId}`);
+    } catch (err) {
+        console.error('Error updating artist:', err);
+        res.status(500).render('error', {
+            message: 'Failed to update artist',
+            error: err.message
+        });
+    }
+}
+module.exports = {
     getAllArtists,
     createArtistsGet,
     createArtistsPost,
     getSingleArtistGet,
-    deleteSingleArtistPost
-}
+    deleteSingleArtistPost,
+    getEditArtistForm,
+    updateArtistPost
+};

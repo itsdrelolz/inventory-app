@@ -1,16 +1,26 @@
-
-const express = require("express") 
-const { formatDate, formatActiveStatus } = require('../utils/formatters');
-
+const express = require("express");
 const albumsRouter = express.Router();
-const albumsController = require("../controllers/albumsController")
+const albumsController = require("../controllers/albumsController");
 
-albumsRouter.get("/", albumsController.getAllAlbums)
+// GET all albums
+albumsRouter.get("/", albumsController.getAllAlbums);
 
-albumsRouter.get("/create", albumsController.createAlbumGet)
+// GET form to create a new album
+albumsRouter.get("/create", albumsController.createAlbumGet);
 
-albumsRouter.post("/create", albumsController.createAlbumPost)
+// POST to create a new album
+albumsRouter.post("/create", albumsController.createAlbumPost);
 
-albumsRouter.get("/:id", albumsController.getSingleAlbumGet)
+// GET a single album by ID
+albumsRouter.get("/:id", albumsController.getSingleAlbumGet);
 
-module.exports =  albumsRouter; 
+// GET form to edit an album
+albumsRouter.get("/edit/:id", albumsController.getEditAlbumForm);
+
+// POST to update an album
+albumsRouter.post("/edit/:id", albumsController.editAlbumPost);
+
+// POST to delete an album
+albumsRouter.post("/delete/:id", albumsController.deleteSingleAlbumPost);
+
+module.exports = albumsRouter;

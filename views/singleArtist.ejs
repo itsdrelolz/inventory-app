@@ -6,7 +6,7 @@
     %>
     <% if (artist && Object.keys(artist).length > 0) { %>
       <div class="artist-actions">
-    <form action="/artists/edit/<%= artist.artist_id %>" method="POST" style="display: inline;">
+    <form action="/artists/edit/<%= artist.artist_id %>" method="GET" style="display: inline;">
         <button type="submit" class="icon-button">
             <img src="/images/icons8-edit-24.png" alt="Edit Artist">
         </button>
