@@ -4,14 +4,18 @@
     const album = albums['0'] || albums;
     %>
     <% if (album && Object.keys(album).length > 0) { %>
-        <div class="artist-actions">
-            <a href="/artist/edit/<%= album.album_id %>" class="icon-link">
-                <img src="/images/icons8-edit-24.png" alt="Edit Artist">
-            </a>
-            <a href="/artist/delete/<%= album.album_id  %>" class="icon-link">
-                <img src="/images/icons8-delete-30.png" alt="Delete Artist">
-            </a>
-        </div>
+        <div class="album-actions">
+    <form action="/albums/edit/<%= album.album_id %>" method="POST" style="display: inline;">
+        <button type="submit" class="icon-button">
+            <img src="/images/icons8-edit-24.png" alt="Edit Album">
+        </button>
+    </form>
+    <form action="/albums/delete/<%= album.album_id %>" method="POST" style="display: inline;">
+        <button type="submit" class="icon-button">
+            <img src="/images/icons8-delete-30.png" alt="Delete Album">
+        </button>
+    </form>
+</div>  
         <div class="card-container">
             <div class="card">
                 <% if (album.picture_url) { %>
