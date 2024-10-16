@@ -1,6 +1,11 @@
 const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const path = require("path");
+const dotenv = require('dotenv');
+
+// Load environment variables
+dotenv.config();
+
 const app = express();
 
 // View engine setup
@@ -10,8 +15,9 @@ app.set("layout", "./layouts/main");
 
 // Middleware
 app.use(expressLayouts);
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 const indexRouter = require("./routes/indexRouter");
@@ -22,7 +28,7 @@ app.use("/", indexRouter);
 app.use("/artists", artistsRouter);
 app.use("/albums", albumsRouter);
 
-
+// 404 handler
 app.use((req, res, next) => {
     console.log(`404 Not Found: ${req.method} ${req.url}`);
     const err = new Error('Not Found');
@@ -45,5 +51,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`App listening on port: ${PORT}`));
+
+module.exports = app; 
